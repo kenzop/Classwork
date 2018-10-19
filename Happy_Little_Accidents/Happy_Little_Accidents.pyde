@@ -4,17 +4,20 @@ def setup():
     size(640, 480)
     noStroke()
     
+def drawMountain():
+    b = height
+    fill('#D0CEBA')
+    triangle(-100, b, 200, b, 60, 200)
+    triangle(-20, b, 380, b, 180, 270)
+    triangle(200, b, 480, b, 360, 300)
+    triangle(400, b, 700, b, 550, 250)
+ 
 def drawSun():
     a = width
     b = height
     fill('#FF9000')
     ellipse(a/2, b, 200, 200)
 
-def drawMountain():
-    b = height
-    fill('#D0CEBA')
-    triangle(-20, b, 240, b, 195, 270)
- 
 def drawClouds():
     global x
     global z
@@ -44,12 +47,12 @@ def draw():
     background('#8DC8FC')
     if x-30 > (width+65):
         x = 0
-    x += 2
+    x += 1
     
     if z > (width+65):
         z = 0
-    z += 3
-    drawSun()
+    z += 2
     drawMountain()
+    drawSun()
     drawClouds()
     drawTrees()
