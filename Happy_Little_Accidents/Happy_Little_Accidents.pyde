@@ -1,9 +1,11 @@
 x = 0
 z = 0
+ylocation = 480
+
 def setup():
     size(640, 480)
     noStroke()
-    
+
 def drawMountain():
     b = height
     fill('#D0CEBA')
@@ -40,10 +42,18 @@ def drawTrees():
     while(a < width): #draws trees
         triangle(a, b, a+20, b, a+10, b-40)
         a += 10
-        
+
+def drawBalloon():
+    xlocation = 550
+    fill('#A1A499')
+    rect(xlocation-1, ylocation-40, 2, 40)
+    fill(255, 0, 0)
+    ellipse(xlocation, ylocation-40, 20, 25)
+
 def draw():
     global x
     global z
+    global ylocation
     background('#8DC8FC')
     if x-30 > (width+65):
         x = 0
@@ -52,7 +62,10 @@ def draw():
     if z > (width+65):
         z = 0
     z += 2
+    ylocation -= 1
+
     drawMountain()
     drawSun()
     drawClouds()
     drawTrees()
+    drawBalloon()
