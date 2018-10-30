@@ -1,10 +1,30 @@
+import random
 x, y, a = 30, 275, False                   #for cloud 1
 p, q, b = 500, 400, False                  #for cloud 2
-
+spoop = ''
+pumpkin = ''
+ghostY = 400
+page = 1
+rectx = 200
+recty = 100
+myFont = ''
+pumpX = 640
 def setup():
+    global spoop, myFont, pumpkin
     size(640, 480)
     noStroke()
+    myFont = createFont('SansSerif.bold', 16)
+    pumpkin = loadImage('pumpkin.png')
+    pumpkin.resize(40, 40)
+    spoop = loadImage('ghost.png')
+    spoop.resize(50, 50)
 
+def keyPressed():
+    global ghostY
+    if keyCode == DOWN and ghostY < height-50:
+        ghostY += 5
+    elif keyCode == UP and ghostY > 300:
+        ghostY -= 5
 def drawSky(): #This took way too long
     fill('#F47E00') #Draws a rectangle with this color followed by other rectangles of different colors below it, making it appear like a sunset
     rect(0, 0, width, height)
@@ -31,18 +51,6 @@ def drawSky(): #This took way too long
     fill('#00008B')
     rect(0, 0, width, height-440)
 
-def drawSpoopyHouse():
-    universal = 50 
-    fill('#CA8F42')
-    rect(universal, height-b, a, b)
-    rect(universal+35, height-(b+18), 10, 20)
-    fill('#B06660')
-    triangle(universal, height-b, universal+50, height-b, universal+25, height-(b+20))
-    fill('#5594ED')
-    rect(universal+12, height-b+2, 10, 10)
-    fill('#543D29')
-    rect(universal+28, height-b+3, 7, 20)
-
 def drawClouds():
     global x
     global y
@@ -61,15 +69,37 @@ def drawClouds():
 def drawSun():
     fill('#FFA100')
     ellipse(width/2, height, 200, 200)
-def draw():
-    global x
-    global a
-    global p
-    global b
+
+def mousePressed():
+    global rectx, recty, page
+    if mouseX > width/2-(rectx/2) and mouseX < width/2+(rectx/2) and mouseY > height-200 and mouseY <height+recty:
+        page = 2
+
+def page1():
+    global rectx, recty
+    background('#FF9100')
+    textFont(myFont)
+    textSize(40)
+    fill('#bb0a1e') 
+    text("Ghost Dodgers", width/2-150, height/4)
+    fill(0, 255, 0)
+    rect(width/2-(rectx/2), height-200, rectx, recty, 5)
+    fill(255)
+    textSize(17)
+    text("Click here to Start", rectx+35, height-recty-40)
+    text("Use the up and down keys to move the ghost.  Try not to get hit!", 15, height-250)
+
+def page2():
+    global x, a, p, b, spoop, pumpX
     drawSky()
     drawSun()
     drawClouds()
-    drawSpoopyHouse
+    image(spoop, 20, ghostY)
+    while pumpX > -50:
+        pumpY = random.randint(300, 480)
+        image(pumpkin, pumpX, pumpY)
+        pumpX -= 4
+    print(pumpY)
  #To make cloud 1 move:
     if x > 700 and a == False:
         a = True
@@ -92,3 +122,9 @@ def draw():
         p += 2
     else:
         p -= 2
+
+def draw():
+    if page == 1:
+        page1()
+    elif page == 2:
+        page2()
