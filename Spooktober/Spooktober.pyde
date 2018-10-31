@@ -9,10 +9,13 @@ page = 1
 rectx = 200
 recty = 100
 myFont = ''
-pumpX = 680
-pumpY = 500
+pumpX1 = 680
+pumpY1 = 500
+pumpX2 = 700
+pumpY2 = 500
 timer = 0
-slowincrease = 0
+slowincrease1 = 0
+slowincrease2 = 0
 score = 0
 
 def setup():
@@ -84,7 +87,7 @@ def mousePressed():
         page = 1
 
 def page1():
-    global rectx, recty, timer, score, slowincrease, pumpX
+    global rectx, recty, timer, score, slowincrease1, slowincrease2, pumpX1, pumpX2
     background('#FF9100')
     textFont(myFont)
     textSize(40)
@@ -99,8 +102,10 @@ def page1():
     text("Try not to get as many pumpkins as you can before time runs out!", 70, height-235)
     timer = 250 #Resets timer just in case player wants to play again
     score = 0 #Resets score
-    slowincrease = 0
-    pumpX = 680
+    slowincrease1 = 0
+    slowincrease2 = 0
+    pumpX1 = 680
+    pumpX2 = 700
     if mouseX > width/2-(rectx/2) and mouseX < width/2+(rectx/2) and mouseY > height-200 and mouseY <height+recty:
         fill(0,128,0)
         rect(width/2-(rectx/2), height-200, rectx, recty, 5)
@@ -117,7 +122,7 @@ def page3():
     text("Click anywhere to reset", 165, 230)
 
 def draw():
-    global x, a, p, b, spoop, pumpX, pumpY, ghostX, timer, slowincrease, score, page
+    global x, a, p, b, spoop, pumpX1, pumpY1, pumpX2, pumpY2, ghostX, timer, slowincrease1, slowincrease2, score, page
 
     if page == 1:
         page1()
@@ -128,17 +133,32 @@ def draw():
         drawSun()
         drawClouds()
         image(spoop, ghostX, ghostY)
-        image(pumpkin, pumpX, pumpY)
-        if pumpX < -50 or pumpX > width:
-            pumpY = random.randint(300, 440)
-        if pumpX < -50:
-            pumpX = width+20
-            if slowincrease < 10:
-                slowincrease += 0.5
-        if pumpX > 0 and pumpX < ghostX + 20 and pumpY > ghostY-25 and pumpY < ghostY+28:
+        image(pumpkin, pumpX1, pumpY1)
+        image(pumpkin, pumpX2, pumpY2)
+
+        if pumpX1 < -50 or pumpX1 > width:
+            pumpY1 = random.randint(300, 440)
+        if pumpX1 < -50:
+            pumpX1 = width+20
+            if slowincrease1 < 9:
+                slowincrease1 += 0.5
+        if pumpX1 > -10 and pumpX1 < ghostX + 20 and pumpY1 > ghostY-25 and pumpY1 < ghostY+28:
             score += 1
-            pumpX = -50
-        pumpX -= (4+slowincrease)
+            pumpX1 = -50
+        pumpX1 -= (4+slowincrease1)
+        
+        if pumpX2 < -10 or pumpX2 > width:
+            pumpY2 = random.randint(300, 440)
+        if pumpX2 < -50:
+            pumpX2 = width+20
+            if slowincrease2 < 7:
+                slowincrease2 += 1
+        if pumpX2 > -10 and pumpX2 < ghostX + 20 and pumpY2 > ghostY-25 and pumpY2 < ghostY+28:
+            score += 1
+            pumpX2 = -50
+        if slowincrease1 > 7.5:
+            pumpX2 -= (4+slowincrease2)
+    
         timer -= 0.1
         text("timer:" + str(int(timer)), 450, 20)
         text("score:" + str(score), 150, 20)
