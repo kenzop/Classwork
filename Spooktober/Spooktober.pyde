@@ -99,7 +99,7 @@ def page1():
     textSize(16)
     text("Click here to Start", rectx+45, height-recty-40)
     text("Use the up and down keys to move the ghost.", 150, height-250)
-    text("Try not to get as many pumpkins as you can before time runs out!", 70, height-235)
+    text("Try not to get as many pumpkins as you can before time runs out!", 20, height-235)
     timer = 250 #Resets timer just in case player wants to play again
     score = 0 #Resets score
     slowincrease1 = 0
