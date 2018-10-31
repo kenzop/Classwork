@@ -1,21 +1,21 @@
 import random
 x, y, a = 30, 275, False                   #for cloud 1
 p, q, b = 500, 400, False                  #for cloud 2
-spoop = ''
+spoop = ''                                 #ghost
 pumpkin = ''
 ghostX = 20
 ghostY = 400
 page = 1
-rectx = 200
-recty = 100
+rectx = 200                                # X coordinate of the button
+recty = 100                                # Y coordinate of the button 
 myFont = ''
 pumpX1 = 680
 pumpY1 = 500
 pumpX2 = 700
 pumpY2 = 500
 timer = 0
-slowincrease1 = 0
-slowincrease2 = 0
+slowincrease1 = 0                          #Causes pumpkin 1 to speed up
+slowincrease2 = 0                          #Causes pumpkin 2 to speed up
 score = 0
 
 def setup():
