@@ -3,12 +3,18 @@ x, y, a = 30, 275, False                   #for cloud 1
 p, q, b = 500, 400, False                  #for cloud 2
 spoop = ''
 pumpkin = ''
+ghostX = 20
 ghostY = 400
 page = 1
 rectx = 200
 recty = 100
 myFont = ''
-pumpX = 640
+pumpX = 680
+pumpY = 500
+timer = 0
+slowincrease = 0
+score = 0
+
 def setup():
     global spoop, myFont, pumpkin
     size(640, 480)
@@ -22,9 +28,9 @@ def setup():
 def keyPressed():
     global ghostY
     if keyCode == DOWN and ghostY < height-50:
-        ghostY += 5
+        ghostY += 7
     elif keyCode == UP and ghostY > 300:
-        ghostY -= 5
+        ghostY -= 7
 def drawSky(): #This took way too long
     fill('#F47E00') #Draws a rectangle with this color followed by other rectangles of different colors below it, making it appear like a sunset
     rect(0, 0, width, height)
@@ -72,59 +78,92 @@ def drawSun():
 
 def mousePressed():
     global rectx, recty, page
-    if mouseX > width/2-(rectx/2) and mouseX < width/2+(rectx/2) and mouseY > height-200 and mouseY <height+recty:
+    if page == 1 and mouseX > width/2-(rectx/2) and mouseX < width/2+(rectx/2) and mouseY > height-200 and mouseY <height+recty:
         page = 2
+    if page == 3:
+        page = 1
 
 def page1():
-    global rectx, recty
+    global rectx, recty, timer, score, slowincrease, pumpX
     background('#FF9100')
     textFont(myFont)
     textSize(40)
     fill('#bb0a1e') 
-    text("Ghost Dodgers", width/2-150, height/4)
+    text("Ghost Rush", width/2-132, height/4)
     fill(0, 255, 0)
     rect(width/2-(rectx/2), height-200, rectx, recty, 5)
     fill(255)
-    textSize(17)
-    text("Click here to Start", rectx+35, height-recty-40)
-    text("Use the up and down keys to move the ghost.  Try not to get hit!", 15, height-250)
+    textSize(16)
+    text("Click here to Start", rectx+45, height-recty-40)
+    text("Use the up and down keys to move the ghost.", 150, height-250)
+    text("Try not to get as many pumpkins as you can before time runs out!", 70, height-235)
+    timer = 250 #Resets timer just in case player wants to play again
+    score = 0 #Resets score
+    slowincrease = 0
+    pumpX = 680
+    if mouseX > width/2-(rectx/2) and mouseX < width/2+(rectx/2) and mouseY > height-200 and mouseY <height+recty:
+        fill(0,128,0)
+        rect(width/2-(rectx/2), height-200, rectx, recty, 5)
+        fill(255)
+        textSize(16)
+        text("Click here to Start", rectx+45, height-recty-40)
+        
 
-def page2():
-    global x, a, p, b, spoop, pumpX
-    drawSky()
-    drawSun()
-    drawClouds()
-    image(spoop, 20, ghostY)
-    while pumpX > -50:
-        pumpY = random.randint(300, 480)
-        image(pumpkin, pumpX, pumpY)
-        pumpX -= 4
-    print(pumpY)
- #To make cloud 1 move:
-    if x > 700 and a == False:
-        a = True
-    
-    if a == True and x < -40:
-        x += 2
-        a = False
-    elif a == True:
-        x -= 2
-    else:
-        x += 2
-     #To make cloud 2 move:
-    if p < -40 and b == False:
-        b = True
-    
-    if b == True and p > 700:
-        p -= 2
-        b = False
-    elif b == True:
-        p += 2
-    else:
-        p -= 2
+def page3():
+    background(0)
+    fill(255)
+    textSize(30)
+    text("Game over.  Your score is: " + str(score), 125, 200)
+    text("Click anywhere to reset", 165, 230)
 
 def draw():
+    global x, a, p, b, spoop, pumpX, pumpY, ghostX, timer, slowincrease, score, page
+
     if page == 1:
         page1()
     elif page == 2:
-        page2()
+        if timer <= 0:
+            page = 3
+        drawSky()
+        drawSun()
+        drawClouds()
+        image(spoop, ghostX, ghostY)
+        image(pumpkin, pumpX, pumpY)
+        if pumpX < -50 or pumpX > width:
+            pumpY = random.randint(300, 440)
+        if pumpX < -50:
+            pumpX = width+20
+            if slowincrease < 10:
+                slowincrease += 0.5
+        if pumpX > 0 and pumpX < ghostX + 20 and pumpY > ghostY-25 and pumpY < ghostY+28:
+            score += 1
+            pumpX = -50
+        pumpX -= (4+slowincrease)
+        timer -= 0.1
+        text("timer:" + str(int(timer)), 450, 20)
+        text("score:" + str(score), 150, 20)
+                
+        #To make cloud 1 move:
+        if x > 700 and a == False:
+            a = True
+            
+        if a == True and x < -40:
+            x += 2
+            a = False
+        elif a == True:
+            x -= 2
+        else:
+            x += 2
+        #To make cloud 2 move:
+        if p < -40 and b == False:
+            b = True
+        
+        if b == True and p > 700:
+            p -= 2
+            b = False
+        elif b == True:
+            p += 2
+        else:
+            p -= 2
+    elif page == 3:
+        page3()
