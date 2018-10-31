@@ -118,8 +118,8 @@ def page3():
     background(0)
     fill(255)
     textSize(30)
-    text("Game over.  Your score is: " + str(score), 125, 200)
-    text("Click anywhere to reset", 150, 230)
+    text("Game over.  Your score is: " + str(score), 100, 200)
+    text("Click anywhere to reset", 125, 230)
 
 def draw():
     global x, a, p, b, spoop, pumpX1, pumpY1, pumpX2, pumpY2, ghostX, timer, slowincrease1, slowincrease2, score, page
