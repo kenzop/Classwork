@@ -7,6 +7,7 @@ def setup():
     size(640, 480)
     noStroke()
     x, y, z, balloonY = 0, height, 0, height
+    
 def draw():
     global x,y, z, balloonY
     background(135, 206, 250)
