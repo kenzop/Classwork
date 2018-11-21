@@ -17,13 +17,15 @@ def draw():
     
     if frameCount % 60 == 0:
         stars.append([-5, random.randint(0, 480)])
+
     i = 0
     for i in range(len(stars)):
         try:
-            ellipse(int(str(stars[i][0])[1:-1]), int(str(stars[i][1])[1:-1]), 5, 5)
-#Reinstall Increment
-            if int(str(stars[i][0])[1:-1]) > 650:
+            ellipse(float(str(stars[i][0])[1:-1]), float(str(stars[i][1])[1:-1]), 5, 5)
+            a = str(float(str(stars[i][0])[1:-1])+0.2)
+            stars[i][0] = "[{}]".format(a)
+            if float(str(stars[i][0])[1:-1]) > 650:
                 stars.pop(i)
-
+        print(len(stars))
         except:
             break
