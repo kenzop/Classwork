@@ -1,9 +1,7 @@
 def setup():
-    global megaman_still, megaman_still_left, megaman_run, megaman_run_left, megamanX, rectx, recty
-    global TIME, PAGE
+    global megaman_still, megaman_still_left, megaman_run, megaman_run_left, rectx, recty
+    global TIME, PAGE, MEGAMAN, MEGAMANX, MEGAMANY
     size(640, 480)
-    TIME = 0
-    PAGE = 1
     megaman_still = loadImage('megaman_still.png')
     megaman_still.resize(200, 100)
     megaman_run = loadImage('megaman_run.png')
@@ -12,19 +10,24 @@ def setup():
     megaman_still_left.resize(200, 100)
     megaman_run_left = loadImage('megaman_run_left.png')
     megaman_run_left.resize(200, 100)
-    megamanX = 50
     rectx = 200
     recty = 100
     
+    TIME = 0
+    PAGE = 1    
+    MEGAMAN = megaman_still
+    MEGAMANX = 50
+    MEGAMANY = 300
     
+
 # Used to track user inputs and move megaman accordingly
 def keyPressed():
-    global megamanX, TIME
+    global MEGAMANX, TIME
     if keyCode == RIGHT:
-        megamanX += 2
+        MEGAMANX += 2
         TIME += 1
     if keyCode == LEFT:
-        megamanX -= 2
+        MEGAMANX -= 2
         TIME += 1
 
 # Used to check the mouse's location.  This is used on the intro screen 
@@ -38,17 +41,23 @@ def mousePressed():
 # This function determines what image of megaman to show to give the impression of
 # an animation
 def megaman_movements():
-    global TIME
-    if TIME > 4 and keyCode == RIGHT:
-        image(megaman_run, megamanX, 50)
-    elif TIME <= 4 and keyCode == RIGHT: 
-        image(megaman_still, megamanX, 50)
-    if TIME > 4 and keyCode == LEFT:
-        image(megaman_run_left, megamanX, 50)
-    elif TIME <= 4 and keyCode == LEFT: 
-        image(megaman_still_left, megamanX, 50)
-    if TIME > 8:
+    global TIME, MEGAMAN
+    if TIME > 2 and keyCode == RIGHT:
+        MEGAMAN = megaman_run
+    elif TIME <= 2 and keyCode == RIGHT: 
+        MEGAMAN = megaman_still
+    if TIME > 2 and keyCode == LEFT:
+        MEGAMAN = megaman_run_left
+    elif TIME < 2 and keyCode == LEFT: 
+        MEGAMAN = megaman_still_left
+    if TIME > 4:
         TIME = 0
+
+def level1_spikes(x, y, midpoint):
+    while x < 300:
+        fill(119,136,153)
+        triangle(x, y, x+midpoint*2, y, x+midpoint, y) #FIX
+        x += 30
 
 # What the program will display while the user is on the introduction scene
 def page1():
@@ -70,7 +79,8 @@ def page1():
 def page3():
     background(255)
     megaman_movements()
-
+    image(MEGAMAN, MEGAMANX, MEGAMANY)
+    level1_spikes(200, 300, 15)
 def draw():
     if PAGE == 1:
         page1()
